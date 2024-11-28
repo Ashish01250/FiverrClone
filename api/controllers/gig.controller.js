@@ -41,6 +41,7 @@ export const getGig = async (req, res, next) => {
 };
 export const getGigs = async (req, res, next) => {
   const q = req.query;
+  console.log(q,"fi");
   const filters = {
     ...(q.userId && { userId: q.userId }),
     ...(q.cat && { cat: q.cat }),
@@ -53,7 +54,9 @@ export const getGigs = async (req, res, next) => {
     ...(q.search && { title: { $regex: q.search, $options: "i" } }),
   };
   try {
-    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+    // const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+    const gigs = await Gig.find();
+    console.log(gigs,"gigs")
     res.status(200).send(gigs);
   } catch (err) {
     next(err);

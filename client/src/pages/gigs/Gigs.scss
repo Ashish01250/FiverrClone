@@ -104,7 +104,8 @@
 
     .cards {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-normal;
+      gap: 20px;
       flex-wrap: wrap;
     }
   }

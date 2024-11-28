@@ -31,7 +31,7 @@ export const updateConversation = async (req, res, next) => {
       },
       { new: true }
     );
-
+    
     res.status(200).send(updatedConversation);
   } catch (err) {
     next(err);

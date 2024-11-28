@@ -22,14 +22,15 @@ export const intent = async (req, res, next) => {
     buyerId: req.userId,
     sellerId: gig.userId,
     price: gig.price,
-    payment_intent: paymentIntent.id,
+    payment_intent: "temporary",
   });
 
   await newOrder.save();
 
-  res.status(200).send({
-    clientSecret: paymentIntent.client_secret,
-  });
+  res.status(200).send(
+    "successful"
+    //{clientSecret: paymentIntent.client_secret,}
+  );
 };
 
 export const getOrders = async (req, res, next) => {
@@ -37,7 +38,11 @@ export const getOrders = async (req, res, next) => {
     const orders = await Order.find({
       ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
       isCompleted: true,
-    });
+    })
+    // const orders = await Order.find({
+    //   ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
+    //   isCompleted: true,
+    // });
 
     res.status(200).send(orders);
   } catch (err) {

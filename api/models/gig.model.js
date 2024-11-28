@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const GigSchema = new Schema(
   {
     userId: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     title: {
       type: String,
@@ -38,10 +38,6 @@ const GigSchema = new Schema(
     images: {
       type: [String],
       required: false,
-    },
-    userId: {
-      type: String,
-      required: true,
     },
     shortTitle: {
       type: String,

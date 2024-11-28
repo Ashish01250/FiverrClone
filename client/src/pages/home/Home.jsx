@@ -6,6 +6,7 @@ import Slide from "../../components/slide/Slide";
 import CatCard from "../../components/catCard/CatCard";
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import { cards, projects } from "../../data";
+import myVideo from "../../../public/img/video.mp4";
 
 function Home() {
   return (
@@ -55,7 +56,7 @@ function Home() {
             </p>
           </div>
           <div className="item">
-            <video src="./img/video.mp4" controls />
+            <video src={myVideo} autoPlay loop muted />
           </div>
         </div>
       </div>

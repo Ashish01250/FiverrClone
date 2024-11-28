@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./GigCard.scss";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ const GigCard = ({ item }) => {
         return res.data;
       }),
   });
+
   return (
     <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
@@ -29,11 +30,14 @@ const GigCard = ({ item }) => {
           )}
           <p>{item.desc}</p>
           <div className="star">
-            <img src="./img/star.png" alt="" />
             <span>
-              {!isNaN(item.totalStars / item.starNumber) &&
-                Math.round(item.totalStars / item.starNumber)}
-            </span>
+              {!isNaN(item.totalStars / item.starNumber) && (
+                <span>
+                  <span>{Math.round(item.totalStars / item.starNumber)}</span>
+                  <img src="./img/star.png" alt="" />
+                </span>
+              )}
+            </span> 
           </div>
         </div>
         <hr />
