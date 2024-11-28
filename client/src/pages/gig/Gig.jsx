@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
 import { Link, useParams } from "react-router-dom";
@@ -10,6 +10,9 @@ import Reviews from "../../components/reviews/Reviews";
 
 function Gig() {
   const { id } = useParams();
+  const [render, setRender] = useState(
+    JSON.parse(localStorage.getItem("currentUser")).isSeller
+  );
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["gig"],
@@ -34,6 +37,16 @@ function Gig() {
       }),
     enabled: !!userId,
   });
+
+  useEffect(() => {
+    console.log(render, "render user role");
+    console.log(document.getElementById("review-button"));
+    const reviewButton = document.getElementById("review-button");
+
+    if (reviewButton && render) {
+      reviewButton.style.display = "none";
+    }
+  }, [isLoadingUser]);
 
   return (
     <div className="gig">
@@ -133,8 +146,10 @@ function Gig() {
                 </div>
               </div>
             )}
-            <Review gigId={id} />
-            <Reviews gigId={id} />
+            {/* <Review gigId={id} /> */}
+            <div className="" id="review-button">
+              <Reviews gigId={id} />
+            </div>
           </div>
           <div className="right">
             <div className="price">

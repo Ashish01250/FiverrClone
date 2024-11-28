@@ -1,4 +1,5 @@
 import "./app.scss";
+import "./index.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import React from "react";
 import Navbar from "./components/navbar/Navbar";
@@ -17,27 +18,26 @@ import MyGigs from "./pages/myGigs/MyGigs";
 import {
   QueryClient,
   QueryClientProvider,
-    useQuery,
-}from "@tanstack/react-query";
+  useQuery,
+} from "@tanstack/react-query";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
+import GigProtectionRoute from "./components/GigProtectionRoute/GigProtectionRoute";
 
 function App() {
-
-  const queryClient = new QueryClient()
-
+  const queryClient = new QueryClient();
 
   const Layout = () => {
     return (
       <div className="app">
-       <QueryClientProvider client={queryClient}>
-        <Navbar /> 
-        <Outlet /> 
-        <Footer /> 
+        <QueryClientProvider client={queryClient}>
+          <Navbar />
+          <Outlet />
+          <Footer />
         </QueryClientProvider>
       </div>
     );
   };
 
- 
   const router = createBrowserRouter([
     {
       path: "/", // Root path
@@ -49,31 +49,63 @@ function App() {
         },
         {
           path: "/gigs", // Gigs listing page
-          element: <Gigs />,
+          element: (
+            <ProtectedRoutes>
+              <Gigs />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/myGigs", // My Gigs page
-          element: <MyGigs />,
+          element: (
+            <ProtectedRoutes>
+              <GigProtectionRoute>
+                <MyGigs />
+              </GigProtectionRoute>
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/orders", // Orders page
-          element: <Orders />,
+          element: (
+            <ProtectedRoutes>
+              <Orders />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/messages", // Messages page
-          element: <Messages />,
+          element: (
+            <ProtectedRoutes>
+              <Message />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/message/:id", // Individual message page
-          element: <Message />,
+          element: (
+            <ProtectedRoutes>
+              <Message />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/add", // Add a new gig page
-          element: <Add />,
+          element: (
+            <ProtectedRoutes>
+              <GigProtectionRoute>
+                <Add />
+              </GigProtectionRoute>
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/gig/:id", // Individual gig page
-          element: <Gig />,
+          element: (
+            <ProtectedRoutes>
+              <Gig />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/register", // Register page

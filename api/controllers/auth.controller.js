@@ -5,16 +5,27 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
   try {
-    const hash = bcrypt.hashSync(req.body.password, 5);
+    console.log(req.body)
+    console.log(req.body)
+    
+    const existingUser = await User.findOne({username: req.body.username});
+    if(existingUser) return res.status(400).json({message: "User already exists!", success: false})
+      const hash = bcrypt.hashSync(req.body.password, 5);
     const newUser = new User({
       ...req.body,
       password: hash,
     });
  
     await newUser.save();
-    res.status(201).send("User has been created.");
+    res.status(201).json({
+      success: true,
+      message: "User has been created.",
+    });
   } catch (err) {
-    next(err);
+    res.status(500).json({
+      success: true,
+      message: "Error creating user",
+    });
   }
 };
 export const login = async (req, res, next) => {
