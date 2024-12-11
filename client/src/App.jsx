@@ -14,6 +14,8 @@ import Orders from "./pages/orders/Orders";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
+import Success from "./pages/success/Success";
+import Pay from "./pages/pay/Pay";
 
 import {
   QueryClient,
@@ -114,6 +116,15 @@ function App() {
         {
           path: "/login", // Login page
           element: <Login />,
+        },
+
+        {
+          path: "/pay/:id", // Pay page
+          element: <Pay />,
+        },
+        {
+          path: "/success", // Success page
+          element: <Success />,
         },
       ],
     },

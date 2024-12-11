@@ -6,7 +6,7 @@ import Slide from "../../components/slide/Slide";
 import CatCard from "../../components/catCard/CatCard";
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import { cards, projects } from "../../data";
-import myVideo from "../../../public/img/video.mp4";
+import myVideo from "/img/video.mp4";
 
 function Home() {
   return (

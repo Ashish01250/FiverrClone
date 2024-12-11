@@ -22,7 +22,7 @@ const Add = () => {
   const handleFeature = (e) => {
     e.preventDefault();
     dispatch({
-      type: "ADD_FEATURE",
+      type: "ADD_FEATURE", 
       payload: e.target[0].value,
     });
     e.target[0].value = "";

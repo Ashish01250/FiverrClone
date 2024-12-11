@@ -22,14 +22,13 @@ export const intent = async (req, res, next) => {
     buyerId: req.userId,
     sellerId: gig.userId,
     price: gig.price,
-    payment_intent: "temporary",
+    payment_intent: paymentIntent.id,
   });
 
   await newOrder.save();
 
   res.status(200).send(
-    "successful"
-    //{clientSecret: paymentIntent.client_secret,}
+    {clientSecret: paymentIntent.client_secret,}
   );
 };
 
@@ -61,7 +60,7 @@ export const confirm = async (req, res, next) => {
         },
       }
     );
-
+    
     res.status(200).send("Order has been confirmed.");
   } catch (err) {
     next(err);

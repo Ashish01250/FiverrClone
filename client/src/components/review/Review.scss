@@ -1,52 +1,81 @@
 .review {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .user {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin: 20px 0px;
-    .user {
-      display: flex;
-      align-items: center;
-      .pp {
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
+    align-items: center;
+    gap: 16px;
+
+    .pp {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      border: 2px solid #1dbf73;
+    }
+
+    .info {
+      span {
+        font-weight: bold;
+        color: #333;
       }
 
       .country {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: gray;
-
-        img {
-          width: 20px;
-        }
-      }
-    }
-
-    .stars {
-      display: flex;
-      gap: 5px;
-
-      img {
-        height: 14px;
-        width: 14px;
-      }
-
-      span {
+        color: #666;
         font-size: 14px;
-        font-weight: bold;
-        color: #ffc108;
       }
     }
+  }
 
-    .helpful {
+  .stars {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+
+    span {
+      font-weight: bold;
+      color: #ffc108;
+    }
+  }
+
+  p {
+    color: #555;
+  }
+
+  .helpful {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    button {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #1dbf73;
+      font-weight: bold;
 
       img {
-        width: 14px;
+        width: 16px;
+        height: 16px;
+      }
+
+      &:hover {
+        text-decoration: underline;
       }
     }
+  }
 }
