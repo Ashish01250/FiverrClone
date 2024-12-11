@@ -1,6 +1,7 @@
 import createError from "../utils/createError.js";
 import Review from "../models/review.model.js";
 import Gig from "../models/gig.model.js";
+import userModel from "../models/user.model.js";
 
 export const createReview = async (req, res, next) => {
   console.log(req.userId);
@@ -37,7 +38,16 @@ export const createReview = async (req, res, next) => {
 
 export const getReviews = async (req, res, next) => {
   try {
-    const reviews = await Review.find({ gigId: req.params.gigId});
+    const reviews = await Review.find({ gigId: req.params.gigId });
+    const reviewers = [];
+    for (let i = 0; i < reviews.length; i++) {
+      console.log(reviews[i].userId);
+      const reviewer = await userModel
+        .findById(reviews[i].userId)
+        .select("username country");
+      reviews[i] = { ...reviews[i]._doc, country : reviewer.country, username : reviewer.username };
+    }
+
     res.status(200).send(reviews);
   } catch (err) {
     next(err);

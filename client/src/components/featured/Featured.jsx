@@ -3,16 +3,33 @@ import "./Featured.scss";
 import { useNavigate } from "react-router-dom";
 
 function Featured() {
-  const [input, setInput] = React.useState(""); // State to store the input
+  const [input, setInput] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
 
-  // This function handles the form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents page reload on form submit
+  const popularSearches = [
+    "Web Design",
+    "WordPress",
+    "Logo Design",
+    "AI Services",
+    "Mobile App"
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (input.trim()) {
-      // If the input is not empty
-      navigate(`/gigs?search=${input}`); // Navigate to /gigs with the search query
+      setIsLoading(true);
+      try {
+        navigate(`/gigs?search=${encodeURIComponent(input.trim())}`);
+      } finally {
+        setIsLoading(false);
+      }
     }
+  };
+
+  const handlePopularSearch = (term) => {
+    setInput(term);
+    navigate(`/gigs?search=${encodeURIComponent(term)}`);
   };
 
   return (
@@ -22,28 +39,40 @@ function Featured() {
           <h1>
             Find the perfect <span>freelance</span> services for your business
           </h1>
-          <div className="search">
+          <form className="search" onSubmit={handleSubmit}>
             <div className="searchInput">
-              <img src="./img/search.png" alt="" />
+              <img src="./img/search.png" alt="search" />
               <input
                 type="text"
                 placeholder="Try building mobile app"
                 value={input}
-                onChange={(e) => setInput(e.target.value)} // Update input state
+                onChange={(e) => setInput(e.target.value)}
+                disabled={isLoading}
               />
             </div>
-            <button onClick={handleSubmit}>Search</button>
-          </div>
+            <button 
+              type="submit" 
+              disabled={isLoading || !input.trim()}
+              className={isLoading ? 'loading' : ''}
+            >
+              {isLoading ? 'Searching...' : 'Search'}
+            </button>
+          </form>
           <div className="popular">
             <span>Popular:</span>
-            <button>Web Design</button>
-            <button>WordPress</button>
-            <button>Logo Design</button>
-            <button>AI Services</button>
+            {popularSearches.map((term) => (
+              <button
+                key={term}
+                onClick={() => handlePopularSearch(term)}
+                type="button"
+              >
+                {term}
+              </button>
+            ))}
           </div>
         </div>
         <div className="right">
-          <img src="./img/man.png" alt="" />
+          <img src="./img/man.png" alt="freelancer" />
         </div>
       </div>
     </div>

@@ -79,7 +79,7 @@ function App() {
           path: "/messages", // Messages page
           element: (
             <ProtectedRoutes>
-              <Message />
+              <Messages />
             </ProtectedRoutes>
           ),
         },

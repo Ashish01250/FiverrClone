@@ -1,5 +1,6 @@
 import createError from "../utils/createError.js";
 import Conversation from "../models/conversation.model.js";
+import mongoose from "mongoose";
 
 export const createConversation = async (req, res, next) => {
   const newConversation = new Conversation({
@@ -24,14 +25,12 @@ export const updateConversation = async (req, res, next) => {
       { id: req.params.id },
       {
         $set: {
-          // readBySeller: true,
-          // readByBuyer: true,
           ...(req.isSeller ? { readBySeller: true } : { readByBuyer: true }),
         },
       },
       { new: true }
     );
-    
+
     res.status(200).send(updatedConversation);
   } catch (err) {
     next(err);
@@ -50,8 +49,11 @@ export const getSingleConversation = async (req, res, next) => {
 
 export const getConversations = async (req, res, next) => {
   try {
+    console.log(req.isSeller);
+    const query = req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
+    console.log(query)
     const conversations = await Conversation.find(
-      req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
+      query
     ).sort({ updatedAt: -1 });
     res.status(200).send(conversations);
   } catch (err) {

@@ -6,27 +6,30 @@ import "./Messages.scss";
 import moment from "moment";
 
 const Messages = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")); // Parse logged-in user from local storage
   const queryClient = useQueryClient();
 
+  // Fetch conversations
   const { isLoading, error, data } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
       newRequest.get(`/conversations`).then((res) => {
-        return res.data;
+        console.log("Fetched Conversations: ", res.data);
+        return res.data; // Ensure the response matches expected structure
       }),
   });
 
+  // Mutation to mark a conversation as read
   const mutation = useMutation({
     mutationFn: (id) => {
       return newRequest.put(`/conversations/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["conversations"]);
+      queryClient.invalidateQueries(["conversations"]); // Refresh conversations after marking as read
     },
   });
 
+  // Mark conversation as read
   const handleRead = (id) => {
     mutation.mutate(id);
   };
@@ -34,47 +37,61 @@ const Messages = () => {
   return (
     <div className="messages">
       {isLoading ? (
-        "loading"
+        "Loading..."
       ) : error ? (
-        "error"
+        "An error occurred while fetching conversations."
       ) : (
         <div className="container">
           <div className="title">
             <h1>Messages</h1>
           </div>
           <table>
-            <tr>
-              <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
-              <th>Last Message</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-            {data.map((c) => (
-              <tr
-                className={
-                  ((currentUser.isSeller && !c.readBySeller) ||
-                    (!currentUser.isSeller && !c.readByBuyer)) &&
-                  "active"
-                }
-                key={c.id}
-              >
-                <td>{currentUser.isSeller ? c.buyerId : c.sellerId}</td>
-                <td>
-                  <Link to={`/message/${c.id}`} className="link">
-                    {c?.lastMessage?.substring(0, 100)}...
-                  </Link>
-                </td>
-                <td>{moment(c.updatedAt).fromNow()}</td>
-                <td>
-                  {((currentUser.isSeller && !c.readBySeller) ||
-                    (!currentUser.isSeller && !c.readByBuyer)) && (
-                    <button onClick={() => handleRead(c.id)}>
-                      Mark as Read
-                    </button>
-                  )}
-                </td>
+            <thead>
+              <tr>
+                <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
+                <th>Last Message</th>
+                <th>Date</th>
+                <th>Action</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {data.map((conversation) => (
+                <tr
+                  key={conversation.id}
+                  className={
+                    ((currentUser.isSeller && !conversation.readBySeller) ||
+                      (!currentUser.isSeller && !conversation.readByBuyer)) &&
+                    "active"
+                  }
+                >
+                  <td>
+                    {currentUser.isSeller
+                      ? conversation.buyerId
+                      : conversation.sellerId}
+                  </td>
+                  <td>
+                    <Link to={`/message/${conversation.id}`} className="link">
+                      {conversation?.lastMessage?.substring(0, 100) ||
+                        "No message available"}
+                      ...
+                    </Link>
+                  </td>
+                  <td>
+                    {conversation.updatedAt
+                      ? moment(conversation.updatedAt).fromNow()
+                      : "Unknown"}
+                  </td>
+                  <td>
+                    {((currentUser.isSeller && !conversation.readBySeller) ||
+                      (!currentUser.isSeller && !conversation.readByBuyer)) && (
+                      <button onClick={() => handleRead(conversation.id)}>
+                        Mark as Read
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       )}

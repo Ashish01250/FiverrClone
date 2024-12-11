@@ -4,11 +4,53 @@
 
   .container {
     width: 1400px;
-    padding: 50px 0px;
+    padding: 50px 0;
 
     .title {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+
+      h1 {
+        font-size: 2rem;
+        color: #333;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+
+      th, td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+      }
+
+      tr {
+        &:hover {
+          background-color: #f9f9f9;
+        }
+
+        &.active {
+          background-color: #e6ffe6;
+        }
+      }
+
+      .link {
+        text-decoration: none;
+        color: #1a73e8;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
 
       button {
         background-color: #1dbf73;
@@ -17,42 +59,25 @@
         border: none;
         padding: 10px;
         cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #17a664;
+        }
       }
     }
 
-    table {
-      width: 100%;
+    .error {
+      color: red;
+      text-align: center;
+      font-size: 1.2rem;
+    }
 
-      tr {
-        height: 100px;
-        th {
-          text-align: left;
-        }
-        td {
-          padding: 10px;
-
-          &:first-child {
-            font-weight: 500;
-          }
-          
-          &:nth-child(2),
-          &:nth-child(3) {
-            color: gray;
-          }
-        }
-
-        button {
-          background-color: #1dbf73;
-          color: white;
-          padding: 10px;
-          border: none;
-          cursor: pointer;
-        }
-
-        &.active {
-          background-color: #1dbf730f;
-        }
-      }
+    .no-data {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #777;
     }
   }
 }
