@@ -3,33 +3,35 @@ import React from "react";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import "./Messages.scss";
+
+
 import moment from "moment";
 
 const Messages = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser")); // Parse logged-in user from local storage
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")); 
   const queryClient = useQueryClient();
 
-  // Fetch conversations
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["conversations"],
     queryFn: () =>
       newRequest.get(`/conversations`).then((res) => {
         console.log("Fetched Conversations: ", res.data);
-        return res.data; // Ensure the response matches expected structure
+        return res.data; 
       }),
   });
 
-  // Mutation to mark a conversation as read
+
   const mutation = useMutation({
     mutationFn: (id) => {
       return newRequest.put(`/conversations/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["conversations"]); // Refresh conversations after marking as read
+      queryClient.invalidateQueries(["conversations"]); 
     },
   });
 
-  // Mark conversation as read
+
   const handleRead = (id) => {
     mutation.mutate(id);
   };

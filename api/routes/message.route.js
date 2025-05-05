@@ -7,6 +7,7 @@ import { verifyToken } from "../middleware/jwt.js";
 
 const router = express.Router();
 
+// Routes for message handling
 router.post("/", verifyToken, createMessage);
 router.get("/:id", verifyToken, getMessages);
 
